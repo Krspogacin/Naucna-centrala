@@ -1,0 +1,39 @@
+<mat-toolbar class="bg-dark" style="overflow: hidden; position: fixed; z-index: 999;">
+  <mat-toolbar-row>
+    <a style="text-decoration: none; color: white" [routerLink]="[ '/' ]">Naučna centrala</a>
+
+    <span class="fill"></span>
+
+    <div *ngIf="username">
+      <button mat-button [matMenuTriggerFor]="menu" style="color: white" class="btn btn-outline-secondary">
+        <mat-icon style="margin-right: 5%;">person</mat-icon>
+        {{username}}
+      </button>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item class="text-primary" [routerLink]="[ '/profile' ]">
+          <mat-icon>person_pin</mat-icon> My profile
+        </a>
+        <mat-divider></mat-divider>
+        <a *ngIf='role == "ROLE_EDITOR"' mat-manu-item class="bg-light text-secondary" [routerLink]="[ '/magazine' ]">
+          <mat-icon>menu_book</mat-icon> Magazines
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-menu-item class="bg-light text-secondary" *ngIf="username" (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon> Logout
+        </a>
+      </mat-menu>
+    </div>&nbsp;&nbsp;
+
+    <button mat-raised-button style="color: white;" class="bg-primary" *ngIf="!username" (click)="openLoginDialog()">
+      <mat-icon>person</mat-icon> Login
+    </button>&nbsp;&nbsp;
+    <button mat-raised-button style="color: white;" class="bg-success" *ngIf="!username"
+      (click)="openRegistrationDialog()">
+      <mat-icon>person_add</mat-icon> Sign up
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div style="padding-top: 60px;">
+  <router-outlet></router-outlet>
+</div>

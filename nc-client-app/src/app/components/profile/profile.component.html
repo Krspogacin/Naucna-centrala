@@ -1,0 +1,58 @@
+<div *ngIf='role == "ROLE_ADMINISTRATOR" '>
+    <h1 style="text-align:center;"> Odobravanje recenzenata </h1>
+    <div style="padding-top: 10px">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Naziv</th>
+                    <th scope="col">Recenzent</th>
+                    <th scope="col">Odobravanje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr scope="row" *ngFor="let task of reviewerTasks">
+                    <td>{{task.id}}</td>
+                    <td>{{task.name}}</td>
+                    <td>
+                        <div *ngIf="task.flag == true"> ✓ </div>
+                        <div *ngIf="task.flag == false"> ✗ </div>
+                    </td>
+                    <td>
+                        <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                (click)="checkReviewer(task)">Odobri recenzenta</button></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <h1 style="text-align:center;"> Odobravanje magazina </h1>
+    <div style="padding-top: 10px">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Naziv</th>
+                    <th scope="col">Aktivan</th>
+                    <th scope="col">Odobravanje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr scope="row" *ngFor="let task of magazineTasks">
+                    <td>{{task.id}}</td>
+                    <td>{{task.name}}</td>
+                    <td>
+                        <div *ngIf="task.flag == true"> ✓ </div>
+                        <div *ngIf="task.flag == false"> ✗ </div>
+                    </td>
+                    <td>
+                        <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                (click)="checkMagazine(task)">Odobri magazin</button></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

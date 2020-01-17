@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.fill{
+    flex: 1 1 auto;
+}
+
+.fields-container {
+    display: flex;
+    flex-direction: column;
+}
+  
+.fields-container > * {
+    width: 100%;
+}

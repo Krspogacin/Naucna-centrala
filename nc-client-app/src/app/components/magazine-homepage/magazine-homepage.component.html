@@ -1,0 +1,34 @@
+<div *ngIf='role == "ROLE_EDITOR"'>
+    <button type="button" class="btn btn-warning" (click)="createMagazine()">Kreiraj magazin</button>
+    <br>
+    <h1 style="text-align:center;">Casopisi koje je kreirao {{urednik}} </h1>
+    <div style="padding-top: 10px">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Issn</th>
+                    <th scope="col">Naziv</th>
+                    <th scope="col">Placanje</th>
+                    <th scope="col">Status magazina</th>
+                    <th scope="col">Naucne oblasti</th>
+                    <th scope="col">Izmeni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr scope="row" *ngFor="let magazine of magazines">
+                    <td>{{magazine.id}}</td>
+                    <td>{{magazine.issn}}</td>
+                    <td>{{magazine.name}}</td>
+                    <td>{{magazine.payment}}</td>
+                    <td>{{magazine.magazineStatus}}</td>
+                    <td>{{magazine.scientificAreas}}</td>
+                    <td>
+                        <div *ngIf='magazine.magazineStatus == "EDIT"'><button type="button" class="btn btn-warning"
+                                (click)="updateMagazine()">Izmeni magazin</button></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
