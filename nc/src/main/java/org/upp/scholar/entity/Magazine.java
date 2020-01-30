@@ -36,6 +36,15 @@ public class Magazine {
     @ManyToOne(optional = false)
     private User chiefEditor;
 
+    @OneToOne
+    private Merchant merchant;
+
+    @OneToMany(mappedBy = "magazine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Edition> editions;
+
+    @OneToMany(mappedBy = "magazine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Subscription> subscriptionList;
+
     @ManyToMany
     @JoinTable(
             name = "magazine_editors",

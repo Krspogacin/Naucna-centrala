@@ -16,8 +16,11 @@ public class MagazineDto {
     private String issn;
     private String name;
     private String payment;
+    private String merchantId;
     private String magazineStatus;
     private String scientificAreas;
+    private Boolean isMerchant;
+    private Boolean flag;
 
     public MagazineDto(Magazine magazine){
         this.id = magazine.getId();
@@ -25,10 +28,17 @@ public class MagazineDto {
         this.name = magazine.getName();
         this.payment = magazine.getPaymentType().name();
         this.magazineStatus = magazine.getMagazineStatus().name();
+        this.flag = false;
         List<String> scientificAreasString = new ArrayList<>();
         for (ScientificArea scientificArea: magazine.getScientificAreas()){
             scientificAreasString.add(scientificArea.getName());
         }
         this.scientificAreas = scientificAreasString.toString();
+        if (magazine.getMerchant() != null){
+            this.isMerchant = magazine.getMerchant().getEnabled();
+            this.merchantId = magazine.getMerchant().getMerchantId();
+        }else{
+            this.isMerchant = false;
+        }
     }
 }

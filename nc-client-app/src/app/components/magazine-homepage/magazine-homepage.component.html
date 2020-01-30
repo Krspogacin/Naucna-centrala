@@ -1,5 +1,7 @@
 <div *ngIf='role == "ROLE_EDITOR"'>
-    <button type="button" class="btn btn-warning" (click)="createMagazine()">Kreiraj magazin</button>
+    <div style="padding-top: 20px; padding-left: 20px;">
+        <button type="button" class="btn btn-warning" (click)="createMagazine()">Kreiraj casopis</button>
+    </div>
     <br>
     <h1 style="text-align:center;">Casopisi koje je kreirao {{urednik}} </h1>
     <div style="padding-top: 10px">
@@ -12,7 +14,9 @@
                     <th scope="col">Placanje</th>
                     <th scope="col">Status magazina</th>
                     <th scope="col">Naucne oblasti</th>
+                    <th scope="col">Registrovan</th>
                     <th scope="col">Izmeni</th>
+                    <th scope="col">Registruj placanje</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,8 +28,17 @@
                     <td>{{magazine.magazineStatus}}</td>
                     <td>{{magazine.scientificAreas}}</td>
                     <td>
+                        <div *ngIf="magazine.isMerchant == true"> ✓ </div>
+                        <div *ngIf="magazine.isMerchant == false"> ✗ </div>
+                    </td>
+                    <td>
                         <div *ngIf='magazine.magazineStatus == "EDIT"'><button type="button" class="btn btn-warning"
                                 (click)="updateMagazine()">Izmeni magazin</button></div>
+                    </td>
+                    <td>
+                        <div *ngIf='magazine.magazineStatus == "ACTIVE" && magazine.isMerchant == false'><button
+                                type="button" class="btn btn-success" (click)="registerMerchant(magazine)">Registruj
+                                placanje</button></div>
                     </td>
                 </tr>
             </tbody>

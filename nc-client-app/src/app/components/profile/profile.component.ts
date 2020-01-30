@@ -31,23 +31,25 @@ export class ProfileComponent implements OnInit {
         this.role = roles[role];
       }
     }
-    this.repositoryService.getReviewerTasks().subscribe(
-      (data) => {
-        console.log(data);
-        this.reviewerTasks = data;
-      },
-      (error) => {
-        this.util.showSnackBar("Error while getting tasks");
-      });
+    if (this.role == "ROLE_ADMINISTRATOR") {
+      this.repositoryService.getReviewerTasks().subscribe(
+        (data) => {
+          console.log(data);
+          this.reviewerTasks = data;
+        },
+        (error) => {
+          this.util.showSnackBar("Error while getting tasks");
+        });
 
-    this.magazineService.getMagazineTasks().subscribe(
-      (data) => {
-        console.log(data);
-        this.magazineTasks = data;
-      },
-      (error) => {
-        this.util.showSnackBar("Error while getting tasks");
-      });
+      this.magazineService.getMagazineTasks().subscribe(
+        (data) => {
+          console.log(data);
+          this.magazineTasks = data;
+        },
+        (error) => {
+          this.util.showSnackBar("Error while getting tasks");
+        });
+    }
   }
 
   checkReviewer(task) {

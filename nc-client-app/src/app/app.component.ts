@@ -73,6 +73,8 @@ export class AppComponent implements OnInit {
           for (var role in roles) {
             if (roles[role] == "ROLE_EDITOR") {
               this.role = roles[role];
+            } else {
+              this.role = null;
             }
           }
           this.router.navigateByUrl('/');

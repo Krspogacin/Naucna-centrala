@@ -13,7 +13,31 @@ export class MagazineService {
   }
 
   getMagazines(editor) {
-    return this.httpClient.get('/api/magazine/'.concat(editor));
+    return this.httpClient.get('/api/magazine/editor/'.concat(editor));
+  }
+
+  getActiveMagazines() {
+    return this.httpClient.get('/api/magazine');
+  }
+
+  getMagazine(id) {
+    return this.httpClient.get('/api/magazine/'.concat(id));
+  }
+
+  getEditions(id, username) {
+    return this.httpClient.get('/api/magazine/editions/'.concat(id) + '/'.concat(username));
+  }
+
+  getEdition(id) {
+    return this.httpClient.get('/api/magazine/edition/'.concat(id));
+  }
+
+  getWorks(id, username) {
+    return this.httpClient.get('/api/magazine/works/'.concat(id) + '/'.concat(username));
+  }
+
+  saveEdition(id, edition) {
+    return this.httpClient.post('/api/magazine/save_edition/'.concat(id), edition);
   }
 
   saveMagazine(formResults, taskId) {
