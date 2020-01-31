@@ -186,19 +186,9 @@ public class PaymentService {
             log.info("Check payment with merchant order id: {}", payment.getMerchantOrderId());
             log.info("Payment request is sent to gateway service");
             MerchantOrderStatus merchantOrderStatus = this.restTemplate.getForEntity(HTTPS_PREFIX + this.SERVER_ADDRESS + ":" + GATEWAY_PORT + "/order_status/" + payment.getMerchantOrderId(), MerchantOrderStatus.class).getBody();
-            if (merchantOrderStatus.equals(MerchantOrderStatus.FINISHED)){
-                log.info("Payment with merchant order id : {} changed status to FINISHED", payment.getMerchantOrderId());
-                payment.setStatus(MerchantOrderStatus.FINISHED);
-                this.paymentRepository.save(payment);
-                log.info("Payment with merchant order id : {} is successfully updated", payment.getMerchantOrderId());
-            }else if(merchantOrderStatus.equals(MerchantOrderStatus.CANCELED)){
-                log.info("Payment with merchant order id : {} changed status to CANCELED", payment.getMerchantOrderId());
-                payment.setStatus(MerchantOrderStatus.CANCELED);
-                this.paymentRepository.save(payment);
-                log.info("Payment with merchant order id : {} is successfully updated", payment.getMerchantOrderId());
-            }else if (merchantOrderStatus.equals(MerchantOrderStatus.EXPIRED)){
-                log.info("Payment with merchant order id : {} changed status to EXPIRED", payment.getMerchantOrderId());
-                payment.setStatus(MerchantOrderStatus.EXPIRED);
+            if (payment.getStatus() != merchantOrderStatus){
+                log.info("Payment with merchant order id : {} changed status to " + merchantOrderStatus, payment.getMerchantOrderId());
+                payment.setStatus(merchantOrderStatus);
                 this.paymentRepository.save(payment);
                 log.info("Payment with merchant order id : {} is successfully updated", payment.getMerchantOrderId());
             }
@@ -236,7 +226,7 @@ public class PaymentService {
         return redirectionResponse;
     }
 
-    public RegistrationCompleteDto completeSubscription(String subscriptionId){
+    public PaymentCompleteDto completeSubscription(String subscriptionId){
         Assert.notNull(subscriptionId , "Payment Id can't be null");
         log.info("Complete subscription");
         SubscriptionStatus subscriptionStatus = this.restTemplate.getForEntity(HTTPS_PREFIX + this.SERVER_ADDRESS + ":" + GATEWAY_PORT + "/subscription/" + subscriptionId, SubscriptionStatus.class).getBody();
@@ -253,17 +243,72 @@ public class PaymentService {
         log.info("Save subscription");
         this.subscriptionRepository.save(subscription);
 
-        RegistrationCompleteDto subscriptionCompleteDto = new RegistrationCompleteDto();
+        PaymentCompleteDto subscriptionCompleteDto = new PaymentCompleteDto();
         if (subscriptionStatus.equals(SubscriptionStatus.ACTIVE)){
             subscriptionCompleteDto.setFlag(true);
+            subscriptionCompleteDto.setId(subscription.getMagazine().getId());
         }else{
             subscriptionCompleteDto.setFlag(false);
+            subscriptionCompleteDto.setId(subscription.getMagazine().getId());
         }
 
         return subscriptionCompleteDto;
     }
 
-    public ResponseEntity<SubscriptionCancelResponse> cancelSubscription(SubscriptionCancelRequest subscriptionCancelRequest) {
-        return this.restTemplate.postForEntity(HTTPS_PREFIX + this.SERVER_ADDRESS + ":" + GATEWAY_PORT + "/subscription/cancel", subscriptionCancelRequest, SubscriptionCancelResponse.class);
+    public SubscriptionCancelResponse cancelSubscription(SubscriptionCancelDto subscriptionCancelDto) {
+        if (subscriptionCancelDto == null){
+            throw new NullPointerException("Subscription cancel dto can't be null");
+        }
+        if (subscriptionCancelDto.getMagazineId() == null && subscriptionCancelDto.getUsername() == null){
+            throw new NullPointerException("Subscription cancel: magazine id and username can't be null");
+        }
+        User user = this.userService.findByUsername(subscriptionCancelDto.getUsername());
+        if (user == null){
+            throw new NotFoundException("User with username: " + subscriptionCancelDto.getUsername() + " not found");
+        }
+        Magazine magazine = this.magazineService.findById(subscriptionCancelDto.getMagazineId());
+        if (magazine == null){
+            throw new NotFoundException("Magazine with id: " + subscriptionCancelDto.getMagazineId() + " not found");
+        }
+        Subscription subscription = this.subscriptionRepository.findByMagazineAndUserAndStatus(magazine, user, SubscriptionStatus.ACTIVE);
+        if (subscription == null) {
+            throw new NotFoundException("Subscription you tried to cancel doesn't exist");
+        }
+        SubscriptionCancelRequest subscriptionCancelRequest = SubscriptionCancelRequest.builder()
+                .merchantSubscriptionId(subscription.getSubscriptionId())
+                .cancelingReason("I don't know why")
+                .build();
+        SubscriptionCancelResponse subscriptionCancelResponse = this.restTemplate.postForEntity(HTTPS_PREFIX + this.SERVER_ADDRESS + ":" + GATEWAY_PORT + "/subscription/cancel", subscriptionCancelRequest, SubscriptionCancelResponse.class).getBody();
+        if (subscriptionCancelResponse.getCancellationFlag()){
+            subscription.setStatus(SubscriptionStatus.CANCELLED);
+            this.subscriptionRepository.save(subscription);
+        }
+        return subscriptionCancelResponse;
+    }
+
+    @Scheduled(fixedDelay = 30000, initialDelay = 10000)
+    public void updateSubscriptionStatus() {
+        log.info("Start subscription checking");
+        List<Subscription> subscriptionInProgress = this.subscriptionRepository.findByStatus(SubscriptionStatus.APPROVAL_PENDING);
+        for (Subscription subscription : subscriptionInProgress) {
+            this.updateSubscriptionStatus(subscription);
+        }
+
+        List<Subscription> activeSubscriptions = this.subscriptionRepository.findByStatus(SubscriptionStatus.ACTIVE);
+        for (Subscription subscription : activeSubscriptions) {
+            this.updateSubscriptionStatus(subscription);
+        }
+    }
+
+    private void updateSubscriptionStatus(Subscription subscription) {
+        log.info("Check subscription with subscription id: {}", subscription.getSubscriptionId());
+        log.info("Subscription request is sent to gateway service");
+        SubscriptionStatus subscriptionStatus = this.restTemplate.getForEntity(HTTPS_PREFIX + this.SERVER_ADDRESS + ":" + GATEWAY_PORT + "/subscription/" + subscription.getSubscriptionId(), SubscriptionStatus.class).getBody();
+        if (subscription.getStatus() != subscriptionStatus){
+            log.info("Subscription with subscription id : {} changed status to " + subscriptionStatus, subscription.getSubscriptionId());
+            subscription.setStatus(subscriptionStatus);
+            this.subscriptionRepository.save(subscription);
+            log.info("Subscription with subscription id : {} is successfully updated", subscription.getSubscriptionId());
+        }
     }
 }

@@ -37,9 +37,9 @@ public class MagazineController {
         return new ResponseEntity<>(this.magazineService.findMagazinesByEditor(editor), HttpStatus.OK);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MagazineDto>> getActiveMagazines(){
-        return new ResponseEntity<>(this.magazineService.findActiveMagazines() , HttpStatus.OK);
+    @GetMapping(value= "/active_magazines/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MagazineDto>> getActiveMagazines(@PathVariable String username){
+        return new ResponseEntity<>(this.magazineService.findActiveMagazines(username) , HttpStatus.OK);
     }
 
     @GetMapping(value= "/editions/{magazineId}/{username}", produces = MediaType.APPLICATION_JSON_VALUE)

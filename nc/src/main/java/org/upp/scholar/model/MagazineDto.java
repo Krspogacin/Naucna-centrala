@@ -20,6 +20,7 @@ public class MagazineDto {
     private String magazineStatus;
     private String scientificAreas;
     private Boolean isMerchant;
+    private Boolean hasSubscription;
     private Boolean flag;
 
     public MagazineDto(Magazine magazine){
@@ -29,6 +30,7 @@ public class MagazineDto {
         this.payment = magazine.getPaymentType().name();
         this.magazineStatus = magazine.getMagazineStatus().name();
         this.flag = false;
+        this.hasSubscription = false;
         List<String> scientificAreasString = new ArrayList<>();
         for (ScientificArea scientificArea: magazine.getScientificAreas()){
             scientificAreasString.add(scientificArea.getName());

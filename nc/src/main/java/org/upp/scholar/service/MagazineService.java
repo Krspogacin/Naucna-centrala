@@ -2,12 +2,14 @@ package org.upp.scholar.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.upp.scholar.entity.*;
-import org.upp.scholar.model.CreatePaymentStatus;
-import org.upp.scholar.model.EditionDto;
-import org.upp.scholar.model.MagazineDto;
-import org.upp.scholar.model.ScientificWorkDto;
+import org.upp.scholar.model.*;
 import org.upp.scholar.repository.EditionRepository;
 import org.upp.scholar.repository.MagazineRepository;
 import org.upp.scholar.repository.ScientificWorkRepository;
@@ -21,6 +23,11 @@ import java.util.Optional;
 @Service
 public class MagazineService {
 
+    private static final String HTTPS_PREFIX = "https://";
+    @Value("${ip.address}")
+    private String SERVER_ADDRESS;
+    private static final String GATEWAY_PORT = "8082";
+
     @Autowired
     private UserService userService;
 
@@ -32,6 +39,9 @@ public class MagazineService {
 
     @Autowired
     private ScientificWorkRepository scientificWorkRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public Magazine findByIssn(String issn){
         Magazine magazine = this.magazineRepository.findByIssn(issn);
@@ -55,13 +65,45 @@ public class MagazineService {
         return magazineDtos;
     }
 
-    public List<MagazineDto> findActiveMagazines(){
+    public List<MagazineDto> findActiveMagazines(String username){
         List<MagazineDto> activeMagazines = new ArrayList<>();
         List<Magazine> magazines = this.magazineRepository.findAll();
         for (Magazine magazine: magazines){
             if (magazine.getMerchant() != null) {
                 if (magazine.getMerchant().getEnabled()) {
-                    activeMagazines.add(new MagazineDto(magazine));
+                    MagazineDto magazineDto = new MagazineDto(magazine);
+                    ResponseEntity<List<SubscriptionPlan>> subscriptionPlans = this.restTemplate.exchange(HTTPS_PREFIX + this.SERVER_ADDRESS + ":" + GATEWAY_PORT + "/subscription/plans/" + magazine.getMerchant().getMerchantId(), HttpMethod.GET, null,  new ParameterizedTypeReference<List<SubscriptionPlan>>() {});
+                    if(subscriptionPlans != null && subscriptionPlans.hasBody()){
+                        List<SubscriptionPlan> plans = subscriptionPlans.getBody();
+                        if (plans == null){
+                            magazineDto.setHasSubscription(false);
+                        } else {
+                            magazineDto.setHasSubscription(true);
+                        }
+                    } else {
+                        magazineDto.setHasSubscription(false);
+                    }
+                    activeMagazines.add(magazineDto);
+                }
+            }
+        }
+
+        if (username != null && !username.equals("null")) {
+            User user = this.userService.findByUsername(username);
+            if (user == null) {
+                throw new NotFoundException("User with username " + username + " not found");
+            }
+            List<Subscription> subscriptions = user.getSubscriptionList();
+            if (subscriptions != null){
+                for (Subscription subscription: subscriptions){
+                    if (subscription.getStatus().equals(SubscriptionStatus.ACTIVE)) {
+                        for (MagazineDto magazineDto: activeMagazines){
+                            if (subscription.getMagazine().getId().equals(magazineDto.getId())) {
+                                log.info("Change magazine flag");
+                                magazineDto.setFlag(true);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -104,8 +146,24 @@ public class MagazineService {
             if (user == null) {
                 throw new NotFoundException("User with username " + username + " not found");
             }
+
+            List<Subscription> subscriptions = user.getSubscriptionList();
+            if (subscriptions != null){
+                for (Subscription subscription: subscriptions){
+                    if (subscription.getStatus().equals(SubscriptionStatus.ACTIVE)) {
+                        if (subscription.getMagazine().getId().equals(magazine.getId())) {
+                            for (EditionDto editionDto: editionDtos) {
+                                log.info("Change edition flag");
+                                editionDto.setFlag(true);
+                            }
+                        }
+                    }
+                }
+            }
+
+
             List<Payment> payments = user.getOrderList();
-            if (payments != null && !username.equals("null")) {
+            if (payments != null) {
                 for (Payment payment : payments) {
                     if (payment.getStatus().equals(MerchantOrderStatus.FINISHED)) {
                         if (payment.getEdition() != null) {
@@ -135,6 +193,21 @@ public class MagazineService {
             if (user == null) {
                 throw new NotFoundException("User with username " + username + " not found");
             }
+
+            List<Subscription> subscriptions = user.getSubscriptionList();
+            if (subscriptions != null){
+                for (Subscription subscription: subscriptions){
+                    if (subscription.getStatus().equals(SubscriptionStatus.ACTIVE)) {
+                        if (subscription.getMagazine().getId().equals(edition.getMagazine().getId())) {
+                            for (ScientificWorkDto scientificWorkDto: scientificWorkDtos) {
+                                log.info("Change scientific work flag");
+                                scientificWorkDto.setFlag(true);
+                            }
+                        }
+                    }
+                }
+            }
+
             List<Payment> payments = user.getOrderList();
             if (payments != null) {
                 for (Payment payment : payments) {

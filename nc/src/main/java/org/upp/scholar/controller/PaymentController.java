@@ -40,13 +40,13 @@ public class PaymentController {
        return new ResponseEntity<>(this.paymentService.subscribe(subscriptionRequest), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/complete_subscription/{subscriptionId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RegistrationCompleteDto> completeSubscription(@PathVariable String subscriptionId){
+    @GetMapping(value = "/complete_subscription/{subscriptionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PaymentCompleteDto> completeSubscription(@PathVariable String subscriptionId){
         return new ResponseEntity<>(this.paymentService.completeSubscription(subscriptionId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/subscription/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SubscriptionCancelResponse> cancelSubscription(@RequestBody final SubscriptionCancelRequest subscriptionCancelRequest) {
-        return this.paymentService.cancelSubscription(subscriptionCancelRequest);
+    public ResponseEntity<SubscriptionCancelResponse> cancelSubscription(@RequestBody final SubscriptionCancelDto subscriptionCancelRequest) {
+        return new ResponseEntity<>(this.paymentService.cancelSubscription(subscriptionCancelRequest), HttpStatus.OK);
     }
 }

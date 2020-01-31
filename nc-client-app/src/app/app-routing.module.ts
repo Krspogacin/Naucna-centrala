@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'magazine', component: MagazineHomepageComponent },
   { path: 'magazine/:id', component: MagazineHomepageComponent },
   { path: 'magazine_list', component: MagazineListComponent },
+  { path: 'magazine_list/:id', component: MagazineListComponent },
   { path: 'edition/:id', component: EditionComponent },
   { path: 'edition/:id/:orderId', component: EditionComponent },
   { path: 'scientific_work/:id', component: ScientificWorkComponent },

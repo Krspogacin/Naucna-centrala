@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { Util } from 'src/app/utils';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MagazineService } from 'src/app/services/magazine/magazine.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
 
 @Component({
   selector: 'app-magazine-list',
@@ -13,26 +14,85 @@ export class MagazineListComponent implements OnInit {
 
   magazines = [];
   roles = [];
-  flag = false;
+  username = null;
+  subscriptionId = null;
 
   constructor(private authenticationService: AuthenticationService,
     private util: Util,
-    private magazineService: MagazineService) { }
+    private route: ActivatedRoute,
+    private router: Router,
+    private magazineService: MagazineService,
+    private paymentService: PaymentService) { }
 
   ngOnInit() {
-    let roles = this.authenticationService.getRoles();
-    console.log(roles);
-    if (roles != [] && roles != null) {
-      this.flag = true;
-    }
-    this.magazineService.getActiveMagazines().subscribe(
+    this.username = this.authenticationService.getUsername();
+    console.log(this.username);
+    this.magazineService.getActiveMagazines(this.username).subscribe(
       (data: any) => {
         console.log(data);
         this.magazines = data;
+
+        this.subscriptionId = this.route.snapshot.paramMap.get('id');
+        console.log(this.subscriptionId);
+        if (this.subscriptionId != null) {
+          this.paymentService.completeSubscription(this.subscriptionId).subscribe(
+            (data: any) => {
+              console.log(data);
+              let magazine: any;
+              for (magazine in this.magazines) {
+                if (magazine.id === data.id) {
+                  magazine.flag = data.flag;
+                }
+              }
+              this.router.navigate(['/magazine_list']);
+              if (data.flag == true) {
+                this.util.showSnackBar('You have successfully subscribe for magazine!');
+              } else {
+                this.util.showSnackBar('You canceled your subscription!');
+              }
+            },
+            () => {
+              this.util.showSnackBar('Error while completing subscription process!');
+            }
+          );
+        }
       },
       () => {
         this.util.showSnackBar("Error occured");
       }
     )
+  }
+
+  subscribe(magazine: any) {
+    let subscriptionDto = {
+      magazineId: magazine.id, merchantId: magazine.merchantId, username: this.username
+    }
+    console.log(subscriptionDto);
+    /*this.paymentService.prepareSubscription(subscriptionDto).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data) {
+          window.location.href = data.redirectionUrl;
+        }
+      }
+    )*/
+  }
+
+  cancelSubscription(magazine: any) {
+    let cancelDto = {
+      username: this.username, magazineId: magazine.id
+    }
+    console.log(cancelDto);
+    /*this.paymentService.cancelSubscription(cancelDto).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data) {
+          this.util.showSnackBar(data.cancellationMessage);
+        }
+      },
+      () => {
+        this.util.showSnackBar('Error while canceling subscription!');
+      }
+    )*/
   }
 }

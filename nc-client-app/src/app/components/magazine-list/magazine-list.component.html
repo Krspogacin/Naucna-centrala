@@ -13,8 +13,13 @@
             <button [routerLink]="[ '/edition', magazine.id ]" class="btn btn-success mr-2">
                 Prikazi sva izdanja
             </button>
-            <button *ngIf="!magazine.flag && username != null" (click)="subscribe(edition)" class="btn btn-warning">
+            <button *ngIf="!magazine.flag && username != null  && magazine.hasSubscription"
+                (click)="subscribe(magazine)" class="btn btn-warning">
                 Pretplati se
+            </button>
+            <button *ngIf="magazine.flag && username != null  && magazine.hasSubscription"
+                (click)="cancelSubscription(magazine)" class="btn btn-warning">
+                Prekini pretplatu
             </button>
         </div>
     </div>

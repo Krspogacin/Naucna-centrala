@@ -16,8 +16,8 @@ export class MagazineService {
     return this.httpClient.get('/api/magazine/editor/'.concat(editor));
   }
 
-  getActiveMagazines() {
-    return this.httpClient.get('/api/magazine');
+  getActiveMagazines(username) {
+    return this.httpClient.get('/api/magazine/active_magazines/'.concat(username));
   }
 
   getMagazine(id) {

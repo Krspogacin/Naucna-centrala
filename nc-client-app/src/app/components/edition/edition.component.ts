@@ -56,7 +56,7 @@ export class EditionComponent implements OnInit {
                 }
               },
               () => {
-                this.util.showSnackBar('Error while completing registration process!');
+                this.util.showSnackBar('Error while completing payment process!');
               }
             );
           }

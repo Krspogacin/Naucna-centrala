@@ -23,4 +23,16 @@ export class PaymentService {
   completePayment(merchantOrderId) {
     return this.httpClient.get('/api/payment/complete_payment/'.concat(merchantOrderId));
   }
+
+  prepareSubscription(subscriptionDto) {
+    return this.httpClient.post('/api/payment/subscription', subscriptionDto);
+  }
+
+  completeSubscription(subscriptionId) {
+    return this.httpClient.get('/api/payment/complete_subscription/'.concat(subscriptionId));
+  }
+
+  cancelSubscription(cancelDto) {
+    return this.httpClient.post('/api/payment/subscription/cancel', cancelDto);
+  }
 }
