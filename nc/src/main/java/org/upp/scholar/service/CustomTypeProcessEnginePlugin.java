@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.form.type.AbstractFormFieldType;
 import org.springframework.stereotype.Service;
+import org.upp.scholar.model.FileFormType;
 import org.upp.scholar.model.MultipleEnumFormType;
 import org.upp.scholar.model.PasswordFormType;
 
@@ -20,8 +21,11 @@ public class CustomTypeProcessEnginePlugin extends AbstractProcessEnginePlugin {
 
         List<AbstractFormFieldType> formTypes = processEngineConfiguration.getCustomFormTypes();
         formTypes.add(new PasswordFormType());
+        formTypes.add(new FileFormType());
         formTypes.add(new MultipleEnumFormType("naucne_oblasti"));
         formTypes.add(new MultipleEnumFormType("editori"));
         formTypes.add(new MultipleEnumFormType("recenzenti"));
+        formTypes.add(new MultipleEnumFormType("recenzenti_iz_casopisa"));
+        formTypes.add(new MultipleEnumFormType("novi_recenzenti_iz_casopisa"));
     }
 }

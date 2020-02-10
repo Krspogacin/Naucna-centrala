@@ -1,0 +1,39 @@
+<h1 mat-dialog-title style="text-align:center;">Dodaj izmenjen rad u PDF formatu</h1>
+<form #f="ngForm" (ngSubmit)="onSubmit(f.value)" ngNativeValidate>
+
+    <div *ngIf="error">
+        {{ error.message }}
+    </div>
+    <div *ngIf="uploadResponse.status === 'error'">
+        {{ uploadResponse.message }}
+    </div>
+    <div *ngIf="uploadResponse.status === 'progress'">
+
+
+        <div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100">
+            {{uploadResponse.message}}%
+        </div>
+
+    </div>
+    <div *ngIf="uploadResponse.status === 'finish'">
+        {{uploadResponse.message}}
+    </div>
+    <div *ngFor="let field of formFields">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <label for={{field.id}}>{{field.label}}</label>
+            </div>
+            <div class="col-5">
+                <input type="text" name={{field.id}} ngModel *ngIf="field.type.name=='string'">
+                <input type="checkbox" name={{field.id}} ngModel *ngIf="field.type.name=='boolean'">
+                <input type="number" name={{field.id}} ngModel *ngIf="field.type.name=='long'">
+                <input type="password" name={{field.id}} ngModel *ngIf="field.type.name=='password'">
+                <input type="file" name="pdf" (change)="onFileChange($event)" *ngIf="field.type.name=='file'" />
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <input class="btn btn-primary" type="submit">
+    </div>
+</form>

@@ -68,14 +68,14 @@ export class MagazineListComponent implements OnInit {
       magazineId: magazine.id, merchantId: magazine.merchantId, username: this.username
     }
     console.log(subscriptionDto);
-    /*this.paymentService.prepareSubscription(subscriptionDto).subscribe(
+    this.paymentService.prepareSubscription(subscriptionDto).subscribe(
       (data: any) => {
         console.log(data);
         if (data) {
           window.location.href = data.redirectionUrl;
         }
       }
-    )*/
+    )
   }
 
   cancelSubscription(magazine: any) {
@@ -83,16 +83,21 @@ export class MagazineListComponent implements OnInit {
       username: this.username, magazineId: magazine.id
     }
     console.log(cancelDto);
-    /*this.paymentService.cancelSubscription(cancelDto).subscribe(
+    this.paymentService.cancelSubscription(cancelDto).subscribe(
       (data: any) => {
         console.log(data);
         if (data) {
-          this.util.showSnackBar(data.cancellationMessage);
+          if (data.cancellationFlag) {
+            this.util.showSnackBar("Cancelation process succesfully completed");
+            magazine.flag = true;
+          } else {
+            this.util.showSnackBar(data.cancellationMessage);
+          }
         }
       },
       () => {
         this.util.showSnackBar('Error while canceling subscription!');
       }
-    )*/
+    )
   }
 }

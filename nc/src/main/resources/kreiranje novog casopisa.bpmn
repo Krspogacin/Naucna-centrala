@@ -81,7 +81,7 @@
       <bpmn:outgoing>SequenceFlow_05zctiw</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_05zctiw" sourceRef="cuvanje_casopisa" targetRef="biranje_editora_i_recenzenata" />
-    <bpmn:userTask id="biranje_editora_i_recenzenata" name="Biranje editora i recenzenta ">
+    <bpmn:userTask id="biranje_editora_i_recenzenata" name="Biranje editora i recenzenta " camunda:assignee="${pokretac}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="editori" label="Editori" type="multipleEnum_editori" />

@@ -1,0 +1,32 @@
+<h1 style="text-align:center;"> Recenziraj rad </h1>
+<div style="padding-top: 10px">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Naziv</th>
+                <th scope="col">Recenziran</th>
+                <th scope="col">Preuzmi rad</th>
+                <th scope="col">Recenziraj</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr scope="row" *ngFor="let task of tasks">
+                <td>{{task.id}}</td>
+                <td>{{task.name}}</td>
+                <td>
+                    <div *ngIf="task.flag == true"> ✓ </div>
+                    <div *ngIf="task.flag == false"> ✗ </div>
+                </td>
+                <td>
+                    <div *ngIf="task.flag == null"><button type="button" class="btn btn-success"
+                            (click)="getScientificWork(task)">Prikazi rad</button></div>
+                </td>
+                <td>
+                    <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                            (click)="review(task)">Recenziraj</button></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

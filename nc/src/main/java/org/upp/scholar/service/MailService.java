@@ -25,10 +25,6 @@ public class MailService implements JavaDelegate {
     @Autowired
     private JavaMailSender javaMailSender;
 
-
-    @Autowired
-    private TokenUtils tokenUtils;
-
     @Autowired
     private RuntimeService runtimeService;
 

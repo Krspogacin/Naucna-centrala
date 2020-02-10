@@ -1,6 +1,18 @@
 <mat-toolbar class="bg-dark" style="overflow: hidden; position: fixed; z-index: 999;">
   <mat-toolbar-row>
-    <a style="text-decoration: none; color: white" [routerLink]="[ '/' ]">Naučna centrala</a>
+    <a style="text-decoration: none; color: var(--success); margin-right: 10; font-size: 120%;"
+      [routerLink]="[ '/' ]">Naučna centrala</a>
+
+    <span class="fill"></span>
+
+    <a style="text-decoration: none; color: white; font-size: 80%;" [routerLink]="[ '/magazine_list' ]">Lista
+      casopisa</a>
+
+    <span class="fill"></span>
+
+    <button class="btn btn-link" style="text-decoration: none; color: white; font-size: 80%;"
+      (click)="openAddWorkDialog()">Dodaj naučni
+      rad</button>
 
     <span class="fill"></span>
 
@@ -10,12 +22,21 @@
         {{username}}
       </button>
       <mat-menu #menu="matMenu">
-        <a mat-menu-item class="text-primary" [routerLink]="[ '/profile' ]">
+        <a *ngIf="roleAdmin" mat-menu-item class="text-primary" [routerLink]="[ '/profile' ]">
           <mat-icon>person_pin</mat-icon> My profile
         </a>
         <mat-divider></mat-divider>
-        <a *ngIf='role == "ROLE_EDITOR"' mat-menu-item class="bg-light text-secondary" [routerLink]="[ '/magazine' ]">
-          <mat-icon>menu_book</mat-icon> Magazines
+        <a *ngIf="roleEditor" mat-menu-item class="bg-light text-secondary" [routerLink]="[ '/magazine' ]">
+          <mat-icon>menu_book</mat-icon> Tasks
+        </a>
+        <mat-divider></mat-divider>
+        <a *ngIf="roleEditor || roleReviewer" mat-menu-item class="bg-light text-secondary"
+          [routerLink]="[ '/active_reviews' ]">
+          <mat-icon>assignment</mat-icon> Active reviews
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-menu-item class="bg-light text-secondary" [routerLink]="[ '/my_scientific_works' ]">
+          <mat-icon>description</mat-icon> My scientific works
         </a>
         <mat-divider></mat-divider>
         <a mat-menu-item class="bg-light text-secondary" *ngIf="username" (click)="logout()">

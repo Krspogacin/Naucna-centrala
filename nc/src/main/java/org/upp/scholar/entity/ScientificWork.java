@@ -23,9 +23,6 @@ public class ScientificWork {
     private String title;
 
     @Column
-    private String coauthors;
-
-    @Column
     private String keyTerms;
 
     @Column
@@ -37,13 +34,14 @@ public class ScientificWork {
     @Column
     private Double price;
 
-    @ManyToMany
-    @JoinTable(
-            name = "scientific_work_scientific_areas",
-            joinColumns = { @JoinColumn(name = "scientific_work_id") },
-            inverseJoinColumns = { @JoinColumn(name = "scientific_area_id") }
-    )
-    private List<ScientificArea> scientificAreas;
+    @Column
+    private String filePath;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User author;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ScientificArea scientificArea;
 
     @Column
     private Boolean enabled;
@@ -53,5 +51,8 @@ public class ScientificWork {
 
     @OneToMany(mappedBy = "scientificWork", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Payment> payments;
+
+    @OneToMany(mappedBy = "scientificWork", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Coauthor> coauthors;
 
 }

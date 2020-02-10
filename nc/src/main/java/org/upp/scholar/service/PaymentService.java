@@ -304,11 +304,13 @@ public class PaymentService {
         log.info("Check subscription with subscription id: {}", subscription.getSubscriptionId());
         log.info("Subscription request is sent to gateway service");
         SubscriptionStatus subscriptionStatus = this.restTemplate.getForEntity(HTTPS_PREFIX + this.SERVER_ADDRESS + ":" + GATEWAY_PORT + "/subscription/" + subscription.getSubscriptionId(), SubscriptionStatus.class).getBody();
-        if (subscription.getStatus() != subscriptionStatus){
-            log.info("Subscription with subscription id : {} changed status to " + subscriptionStatus, subscription.getSubscriptionId());
-            subscription.setStatus(subscriptionStatus);
-            this.subscriptionRepository.save(subscription);
-            log.info("Subscription with subscription id : {} is successfully updated", subscription.getSubscriptionId());
+        if (subscriptionStatus != null) {
+            if (subscription.getStatus() != subscriptionStatus) {
+                log.info("Subscription with subscription id : {} changed status to " + subscriptionStatus, subscription.getSubscriptionId());
+                subscription.setStatus(subscriptionStatus);
+                this.subscriptionRepository.save(subscription);
+                log.info("Subscription with subscription id : {} is successfully updated", subscription.getSubscriptionId());
+            }
         }
     }
 }

@@ -1,0 +1,22 @@
+<h1 mat-dialog-title style="text-align:center;">Pregledaj i odgovori na komentare recenzenata</h1>
+<form #f="ngForm" (ngSubmit)="onSubmit(f.value)" ngNativeValidate>
+
+    <div *ngFor="let field of formFields">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <label for={{field.id}}>{{field.label}}</label>
+            </div>
+            <div class="col-5">
+                <input disabled value="{{field.value.value}}" type="text" name={{field.id}}
+                    *ngIf="field.type.name=='string'">
+                <input disabled type="checkbox" name={{field.id}} *ngIf="field.type.name=='boolean'">
+                <input disabled value="{{field.value.value}}" type="number" name={{field.id}}
+                    *ngIf="field.type.name=='long'">
+                <input type="text" ngModel name={{field.id}} *ngIf="field.type.name=='password'">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <input class="btn btn-primary" type="submit">
+    </div>
+</form>

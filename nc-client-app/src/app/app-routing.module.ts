@@ -13,6 +13,27 @@ import { ProfileMagazineDialogComponent } from './components/profile-magazine-di
 import { MagazineListComponent } from './components/magazine-list/magazine-list.component';
 import { EditionComponent } from './components/edition/edition.component';
 import { ScientificWorkComponent } from './components/scientific-work/scientific-work.component';
+import { ChooseMagazineDialogComponent } from './components/choose-magazine-dialog/choose-magazine-dialog.component';
+import { ScientificWorkInfoDialogComponent } from './components/scientific-work-info-dialog/scientific-work-info-dialog.component';
+import { CoauthorDialogComponent } from './components/coauthor-dialog/coauthor-dialog.component';
+import { UploadFileDialogComponent } from './components/upload-file-dialog/upload-file-dialog.component';
+import { CheckScientificWorkDialogComponent } from './components/check-scientific-work-dialog/check-scientific-work-dialog.component';
+import { CheckPdfDialogComponent } from './components/check-pdf-dialog/check-pdf-dialog.component';
+import { SetCorrectionTimeDialogComponent } from './components/set-correction-time-dialog/set-correction-time-dialog.component';
+import { MyScientificWorksComponent } from './components/my-scientific-works/my-scientific-works.component';
+import { ChangeFormatDialogComponent } from './components/change-format-dialog/change-format-dialog.component';
+import { SelectReviewersDialogComponent } from './components/select-reviewers-dialog/select-reviewers-dialog.component';
+import { SetReviewTimeDialogComponent } from './components/set-review-time-dialog/set-review-time-dialog.component';
+import { ActiveReviewsComponent } from './components/active-reviews/active-reviews.component';
+import { ReviewDialogComponent } from './components/review-dialog/review-dialog.component';
+import { ReviewResultsDialogComponent } from './components/review-results-dialog/review-results-dialog.component';
+import { EditorDecisionDialogComponent } from './components/editor-decision-dialog/editor-decision-dialog.component';
+import { SetChangingTimeDialogComponent } from './components/set-changing-time-dialog/set-changing-time-dialog.component';
+import { ReviewerCommentDialogComponent } from './components/reviewer-comment-dialog/reviewer-comment-dialog.component';
+import { ChangePdfDialogComponent } from './components/change-pdf-dialog/change-pdf-dialog.component';
+import { EditorFinalDecisionDialogComponent } from './components/editor-final-decision-dialog/editor-final-decision-dialog.component';
+import { SetChangingTimeAgainDialogComponent } from './components/set-changing-time-again-dialog/set-changing-time-again-dialog.component';
+import { NewReviewersDialogComponent } from './components/new-reviewers-dialog/new-reviewers-dialog.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -24,8 +45,10 @@ const routes: Routes = [
   { path: 'magazine_list/:id', component: MagazineListComponent },
   { path: 'edition/:id', component: EditionComponent },
   { path: 'edition/:id/:orderId', component: EditionComponent },
+  { path: 'my_scientific_works', component: MyScientificWorksComponent },
   { path: 'scientific_work/:id', component: ScientificWorkComponent },
-  { path: 'scientific_work/:id/:orderId', component: ScientificWorkComponent }
+  { path: 'scientific_work/:id/:orderId', component: ScientificWorkComponent },
+  { path: 'active_reviews', component: ActiveReviewsComponent }
 ];
 
 @NgModule({
@@ -37,4 +60,8 @@ export class AppRoutingModule { }
 export const RoutingComponents = [HomepageComponent,
   RegistrationDialogComponent, LoginComponent, VerifyComponent, ProfileComponent, ProfileDialogComponent, MagazineComponent,
   MagazineHomepageComponent, MagazineERComponent, ProfileMagazineDialogComponent, MagazineListComponent, EditionComponent,
-  ScientificWorkComponent];
+  ScientificWorkComponent, ChooseMagazineDialogComponent, ScientificWorkInfoDialogComponent, CoauthorDialogComponent,
+  UploadFileDialogComponent, CheckScientificWorkDialogComponent, CheckPdfDialogComponent, SetCorrectionTimeDialogComponent,
+  MyScientificWorksComponent, ChangeFormatDialogComponent, SelectReviewersDialogComponent, SetReviewTimeDialogComponent,
+  ActiveReviewsComponent, ReviewDialogComponent, ReviewResultsDialogComponent, EditorDecisionDialogComponent, SetChangingTimeDialogComponent,
+  ReviewerCommentDialogComponent, ChangePdfDialogComponent, EditorFinalDecisionDialogComponent, SetChangingTimeAgainDialogComponent, NewReviewersDialogComponent];

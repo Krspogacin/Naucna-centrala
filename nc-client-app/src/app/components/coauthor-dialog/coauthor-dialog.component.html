@@ -1,0 +1,25 @@
+<h1 mat-dialog-title style="text-align:center;">Unesi koautora</h1>
+<form #f="ngForm" (ngSubmit)="onSubmit(f.value)" ngNativeValidate>
+
+    <div *ngFor="let field of formFields">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <label for={{field.id}}>{{field.label}}</label>
+            </div>
+            <div class="col-5">
+                <input type="text" name={{field.id}} ngModel *ngIf="field.type.name=='string'">
+                <input type="checkbox" name={{field.id}} ngModel *ngIf="field.type.name=='boolean'">
+                <input type="number" name={{field.id}} ngModel *ngIf="field.type.name=='long'">
+                <input type="password" name={{field.id}} ngModel *ngIf="field.type.name=='password'">
+                <select name="{{field.id}}" ngModel *ngIf="field.type.name=='enum'">
+                    <option *ngFor="let val of enumValues" value={{val}}>
+                        {{field.type.values[val]}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <input class="btn btn-primary" type="submit">
+    </div>
+</form>

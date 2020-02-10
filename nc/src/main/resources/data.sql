@@ -2,6 +2,8 @@ INSERT INTO db_camunda.act_id_group (ID_, REV_, NAME_, TYPE_) VALUES ('camunda-a
 INSERT INTO db_camunda.act_id_group (ID_, REV_, NAME_, TYPE_) VALUES ('users', 1, 'Users', 'WORKFLOW');
 INSERT INTO db_camunda.act_id_group (ID_, REV_, NAME_, TYPE_) VALUES ('reviewers', 1, 'Reviewers', 'WORKFLOW');
 INSERT INTO db_camunda.act_id_group (ID_, REV_, NAME_, TYPE_) VALUES ('editors', 1, 'Editors', 'WORKFLOW');
+INSERT INTO db_camunda.act_id_group (ID_, REV_, NAME_, TYPE_) VALUES ('guests', 1, 'Guests', 'WORKFLOW');
+
 
 INSERT INTO db_camunda.AUTHORITY (id, name) VALUES (1, 'ROLE_ADMINISTRATOR');
 INSERT INTO db_camunda.AUTHORITY (id, name) VALUES (2, 'ROLE_USER');
@@ -19,6 +21,13 @@ INSERT INTO db_camunda.user (id, email, enabled, first_name, last_name, password
 VALUES (1, 'xmlws.megatravel@gmail.com', b'1', 'System', 'Administrator', '$2a$10$T.0qfMAWd5K.l5zOXTh7Y.79ModAo1cZkSb0kt4i0.AVcdWifFFwK', null, 'systemAdmin');
 
 INSERT INTO db_camunda.user_authorities(user_id, authority_id) VALUES (1, 1);
+
+INSERT INTO db_camunda.act_id_user (ID_, REV_, FIRST_, LAST_, EMAIL_, PWD_, SALT_, LOCK_EXP_TIME_, ATTEMPTS_, PICTURE_ID_)
+VALUES ('guest', 1, 'Guest', 'Guest', 'xmlws.megatravel@gmail.com',
+'{SHA-512}Xy3jYn9hwSzWOv2vGzVZwHlx6uR525qn9ZdXHsWKcWNaIjZ8mEqpd1cVe6m3nejetpENeYOW7Im3CtizYKIHMw==',
+'+vjpNnOsPi4VU7a1p/9heQ==', null, null, null);
+
+INSERT INTO db_camunda.act_id_membership (USER_ID_, GROUP_ID_) VALUES ('guest', 'guests');
 
 INSERT INTO db_camunda.act_id_user (ID_, REV_, FIRST_, LAST_, EMAIL_, PWD_, SALT_, LOCK_EXP_TIME_, ATTEMPTS_, PICTURE_ID_)
 VALUES ('urednik1', 1, 'Urednik', 'Tadic', 'urednik1@gmail.com',

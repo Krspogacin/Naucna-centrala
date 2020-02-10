@@ -24,7 +24,7 @@ export class MagazineERComponent implements OnInit {
 
     const processInstaceId = this.authenticationService.getProcessInstanceId();
     if (!processInstaceId) {
-      this.util.showSnackBar("Doslo je do greske prilikom verifikaciji korisnika");
+      this.util.showSnackBar("Doslo je do greske prilikom unosa urednika i recenzenata");
       return;
     }
     console.log(processInstaceId);

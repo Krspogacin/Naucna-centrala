@@ -14,7 +14,6 @@ public class ScientificWorkDto {
 
     private Long id;
     private String title;
-    private String coauthors;
     private String keyTerms;
     private String workAbstract;
     private String scientificAreas;
@@ -25,7 +24,6 @@ public class ScientificWorkDto {
     public ScientificWorkDto(ScientificWork scientificWork){
         this.id = scientificWork.getId();
         this.title = scientificWork.getTitle();
-        this.coauthors = scientificWork.getCoauthors();
         this.keyTerms = scientificWork.getKeyTerms();
         this.workAbstract = scientificWork.getWorkAbstract();
         this.description = scientificWork.getDescription();

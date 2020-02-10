@@ -95,8 +95,6 @@ public class UserService implements UserDetailsService {
         user.setAuthorities(authorities);
         this.userRepository.save(user);
         this.runtimeService.setVariable(processInstanceId, "korisnik_verifikovan", true);
-        System.out.println(this.runtimeService.getVariable(processInstanceId,"korisnik_verifikovan"));
-
     }
 
     public List<TaskDto> getActiveCheckReviewerTasks(){

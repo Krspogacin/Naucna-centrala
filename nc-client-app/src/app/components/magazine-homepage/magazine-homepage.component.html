@@ -44,4 +44,269 @@
             </tbody>
         </table>
     </div>
+    <div *ngIf="tasks.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Pregledanje tematske prihvatljivosti radova </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Odobren</th>
+                        <th scope="col">Odobravanje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="checkScientificWork(task)">Odobri naučni rad</button></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="tasks2.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Pregledanje formatiranosti radova (pdf fajlova) </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Odobren</th>
+                        <th scope="col">Preuzmi rad</th>
+                        <th scope="col">Odobravanje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks2">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-success"
+                                    (click)="getScientificWork(task)">Prikazi rad</button></div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="checkPDF(task)">Odobri naučni rad</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="tasks3.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Izbor recenzenata </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Izabrano</th>
+                        <th scope="col">Izaberi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks3">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="selectReviewers(task)">Izaberi recenzente</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="tasks4.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Zadavanje vremena recenzentima za recenziranje </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Zadato</th>
+                        <th scope="col">Zadaj vreme</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks4">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="setTime(task)">Zadaj vreme</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="tasks5.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Pregled recenzija </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Pregledano</th>
+                        <th scope="col">Pregledaj</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks5">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="reviewResult(task)">Pregledaj</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="tasks6.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Donesi konačnu odluku </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Doneta odluka</th>
+                        <th scope="col">Donesi odluku</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks6">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="getDecision(task)">Donesi odluku</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="tasks7.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Donesi konačnu odluku </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Doneta odluka</th>
+                        <th scope="col">Preuzmi rad</th>
+                        <th scope="col">Donesi odluku</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks7">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-success"
+                                    (click)="getScientificWork(task)">Prikazi rad</button></div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="getFinalDecision(task)">Donesi odluku</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="tasks8.length != 0">
+        <br>
+        <br>
+        <h1 style="text-align:center;"> Izaberi nove recenzente </h1>
+        <div style="padding-top: 10px">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Izabrani</th>
+                        <th scope="col">Izaberi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row" *ngFor="let task of tasks8">
+                        <td>{{task.id}}</td>
+                        <td>{{task.name}}</td>
+                        <td>
+                            <div *ngIf="task.flag == true"> ✓ </div>
+                            <div *ngIf="task.flag == false || task.flag == null"> ✗ </div>
+                        </td>
+                        <td>
+                            <div *ngIf="task.flag == null"><button type="button" class="btn btn-warning"
+                                    (click)="getNewReviewers(task)">Izaberi</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

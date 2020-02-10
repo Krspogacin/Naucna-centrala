@@ -1,0 +1,23 @@
+<h1 mat-dialog-title style="text-align:center;">Pregledaj format rada</h1>
+<form #f="ngForm" (ngSubmit)="onSubmit(f.value)" ngNativeValidate>
+
+    <div *ngFor="let field of formFields">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <label for={{field.id}}>{{field.label}}</label>
+            </div>
+            <div class="col-5">
+                <input value="{{field.value.value}}" type="text" ngModel name={{field.id}}
+                    *ngIf="field.type.name=='string'">
+                <input type="checkbox" ngModel name={{field.id}} *ngIf="field.type.name=='boolean'">
+                <input value="{{field.value.value}}" type="number" ngModel name={{field.id}}
+                    *ngIf="field.type.name=='long'">
+                <input value="{{field.value.value}}" type="password" ngModel name={{field.id}}
+                    *ngIf="field.type.name=='password'">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <input class="btn btn-primary" type="submit">
+    </div>
+</form>
