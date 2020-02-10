@@ -337,7 +337,7 @@
     <bpmn:boundaryEvent id="BoundaryEvent_12ebnxe" attachedToRef="recenziranje_rada">
       <bpmn:outgoing>SequenceFlow_16iozml</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_076ddq6">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT${broj_sati_za_recenziju}M</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT${broj_sati_za_recenziju}H</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="SequenceFlow_16iozml" sourceRef="BoundaryEvent_12ebnxe" targetRef="Task_11i4fie" />
